@@ -2,19 +2,19 @@
 ** THIS SOFTWARE IS SUBJECT TO COPYRIGHT PROTECTION AND IS OFFERED ONLY
 ** PURSUANT TO THE 3DFX GLIDE GENERAL PUBLIC LICENSE. THERE IS NO RIGHT
 ** TO USE THE GLIDE TRADEMARK WITHOUT PRIOR WRITTEN PERMISSION OF 3DFX
-** INTERACTIVE, INC. A COPY OF THIS LICENSE MAY BE OBTAINED FROM THE 
-** DISTRIBUTOR OR BY CONTACTING 3DFX INTERACTIVE INC(info@3dfx.com). 
-** THIS PROGRAM IS PROVIDED "AS IS" WITHOUT WARRANTY OF ANY KIND, EITHER 
+** INTERACTIVE, INC. A COPY OF THIS LICENSE MAY BE OBTAINED FROM THE
+** DISTRIBUTOR OR BY CONTACTING 3DFX INTERACTIVE INC(info@3dfx.com).
+** THIS PROGRAM IS PROVIDED "AS IS" WITHOUT WARRANTY OF ANY KIND, EITHER
 ** EXPRESSED OR IMPLIED. SEE THE 3DFX GLIDE GENERAL PUBLIC LICENSE FOR A
-** FULL TEXT OF THE NON-WARRANTY PROVISIONS.  
-** 
+** FULL TEXT OF THE NON-WARRANTY PROVISIONS.
+**
 ** USE, DUPLICATION OR DISCLOSURE BY THE GOVERNMENT IS SUBJECT TO
 ** RESTRICTIONS AS SET FORTH IN SUBDIVISION (C)(1)(II) OF THE RIGHTS IN
 ** TECHNICAL DATA AND COMPUTER SOFTWARE CLAUSE AT DFARS 252.227-7013,
 ** AND/OR IN SIMILAR OR SUCCESSOR CLAUSES IN THE FAR, DOD OR NASA FAR
 ** SUPPLEMENT. UNPUBLISHED RIGHTS RESERVED UNDER THE COPYRIGHT LAWS OF
-** THE UNITED STATES.  
-** 
+** THE UNITED STATES.
+**
 ** COPYRIGHT 3DFX INTERACTIVE, INC. 1999, ALL RIGHTS RESERVED
 **
 */
@@ -27,7 +27,6 @@
 #include <time.h>
 #include <math.h>
 
-#include <glide.h>
 
 #ifdef __unix__
 #include <limits.h>
@@ -70,12 +69,12 @@ int crt0_startup_flags = _CRT0_FLAG_NONMOVE_SBRK;
 #endif
 
 /* TXS file header
-   
+
    New fields can be added at any time, but they should ALWAYS be added after the data_offset
    field.  This keeps backwards compatibility in place if the new fields aren't mandatory.
-   
+
    Field Definitions:
-   
+
    cookie                       - used to identify a true TXS file
    version                      - TXS version for the file.  For backwards compatible changes (i.e. the file
                                   can still be loaded and used by earlier versions of TXS/Texus ), only the
@@ -136,14 +135,14 @@ FxBool tlOkToRender(void)
 GrContext_t*
 tlCheckRenderContext(FxU32 glideDeviceNum)
 {
-  return ((fsContextList[glideDeviceNum].context == 0x00UL) 
+  return ((fsContextList[glideDeviceNum].context == 0x00UL)
           ? NULL
           : &fsContextList[glideDeviceNum].context);
 } /* tlCheckRenderContext */
 
 GrContext_t*
-tlGetRenderContext(FxU32 glideDeviceNum, 
-                   FxU32 hWnd, 
+tlGetRenderContext(FxU32 glideDeviceNum,
+                   FxU32 hWnd,
                    GrScreenResolution_t res, GrScreenRefresh_t refresh,
                    GrColorFormat_t colorFmt,
                    GrOriginLocation_t origin,
@@ -188,36 +187,36 @@ tlGetRenderContext(FxU32 glideDeviceNum,
   Arguments:
   argc    - first argument to main
   argv    - second argument to main
-  tags    - string of non-whitespace characters to be search for in the 
+  tags    - string of non-whitespace characters to be search for in the
             argument string
-  match   - pointer to storage for matched character 
+  match   - pointer to storage for matched character
   remArgs - pointer to storage for remaining arglist after any match
   Return:
    1 if matched
    0 if no more arguments
   -1 if unrecognized
   -------------------------------------------------------------------*/
-int tlGetOpt( int argc, char *argv[], 
-              const char *tags, char *match, 
+int tlGetOpt( int argc, char *argv[],
+              const char *tags, char *match,
               char **remArgs[] )
 {
     static int firstCall;
     static int lastArg;
-    
+
     int rv = 0;
 
     if ( !firstCall ) {
       lastArg   = 1;
       firstCall = 1;
-      
+
 
 #if __MWERKS__
       SIOUXSettings.standalone       = true;
       SIOUXSettings.setupmenus       = false;
       SIOUXSettings.autocloseonquit  = true;
       SIOUXSettings.asktosaveonclose = false;
-#endif        
-    } 
+#endif
+    }
 
     while( (lastArg<argc) && (*argv[lastArg] != '-') ) lastArg++;
 
@@ -292,7 +291,7 @@ void
 tlGetDimsByConst(const int resConst, float *w, float *h)
 {
   int match;
-  
+
   for( match = 0; match < resTableSize; match++ ) {
     if ( resTable[match].res == resConst ){
       *w  = resTable[match].width;
@@ -323,12 +322,12 @@ tlGetDimsByConst(const int resConst, float *w, float *h)
   GrResolution_t matching resolution argument
   -------------------------------------------------------------------*/
 static int Res = GR_RESOLUTION_640x480;
-int 
-tlGetResolutionConstant( const char *identifier, float *width, 
-                        float *height ) 
+int
+tlGetResolutionConstant( const char *identifier, float *width,
+                        float *height )
 {
   int match;
-  
+
   for( match = 0; match < resTableSize; match++ ) {
     if ( !strcmp( identifier, resTable[match].id ) ) {
       Res = resTable[match].res;
@@ -617,7 +616,7 @@ static int drawChar( char character,
   Implementor(s): jdt
   Library: Test Library
   Description:
-  Initialize Console for printing.  The console will scroll text 
+  Initialize Console for printing.  The console will scroll text
   60 column text in the window described by minx, miny, maxx, maxy.
   Arguments:
   minX, minY - upper left corner of console
@@ -638,7 +637,7 @@ static float consoleOriginY;
 static float consoleCharWidth;
 static float consoleCharHeight;
 
-void tlConSet( float minX, float minY, 
+void tlConSet( float minX, float minY,
                float maxX, float maxY,
                int columns, int rows,
                int color )
@@ -650,14 +649,14 @@ void tlConSet( float minX, float minY,
     if (state == NULL) {
       FxI32 state_size;
       grGet(GR_GLIDE_STATE_SIZE, 4, &state_size);
-      state = malloc(state_size);        
+      state = malloc(state_size);
     }
     if (vlstate == NULL) {
       FxI32 state_size;
       grGet(GR_GLIDE_VERTEXLAYOUT_SIZE, 4, &state_size);
-      vlstate = malloc(state_size);        
+      vlstate = malloc(state_size);
     }
-    
+
     fontInfo.smallLodLog2    = GR_LOD_LOG2_128;
     fontInfo.largeLodLog2    = GR_LOD_LOG2_128;
     fontInfo.aspectRatioLog2 = GR_ASPECT_LOG2_2x1;
@@ -673,18 +672,18 @@ void tlConSet( float minX, float minY,
         char *hit = strchr( fontString, entry );
         if ( hit ) {
             int offset = hit - fontString;
-            
+
             /* we need to multiply times 2 since Glide wants texture
              * coords in the range of 0..255 and our font texture is
              * only 128 wide */
             xCoord = ( offset % charsPerLine )  * 2*fontWStride;
-            yCoord = ( offset / charsPerLine )  * 2*fontHStride; 
+            yCoord = ( offset / charsPerLine )  * 2*fontHStride;
 
             fontTable[entry][0] = xCoord;
             fontTable[entry][1] = yCoord;
         }
     }
-    
+
     /* use maximum number of cols/rows possible */
     if (columns <= 0)
       columns = (int)((maxX - minX) * scrXScale / fontWidth);
@@ -712,13 +711,13 @@ void tlConSet( float minX, float minY,
     }
 #endif
 
-    fontAddress = grTexMaxAddress( 0 ) - 
+    fontAddress = grTexMaxAddress( 0 ) -
       grTexCalcMemRequired( fontInfo.smallLodLog2, fontInfo.largeLodLog2,
                             fontInfo.aspectRatioLog2, fontInfo.format );
 
     fontInitialized = 1;
 
-    return; 
+    return;
 }
 
 /*-------------------------------------------------------------------
@@ -832,7 +831,7 @@ void tlConRender( void )
 
     if( fontInitialized ) {
         int x, y;
-        
+
         grGlideGetState( state );
         grGlideGetVertexLayout( vlstate );
 
@@ -857,7 +856,7 @@ void tlConRender( void )
                       GR_COMBINE_FACTOR_NONE,
                       GR_COMBINE_FUNCTION_LOCAL,
                       GR_COMBINE_FACTOR_NONE,
-                      FXFALSE, 
+                      FXFALSE,
                       FXFALSE );
         grAlphaBlendFunction( GR_BLEND_SRC_ALPHA, GR_BLEND_ONE_MINUS_SRC_ALPHA,
                               GR_BLEND_ONE, GR_BLEND_ZERO );
@@ -881,7 +880,7 @@ void tlConRender( void )
         grCullMode( GR_CULL_DISABLE );
         grTexDownloadMipMap( 0, fontAddress, GR_MIPMAPLEVELMASK_BOTH,
                              &fontInfo );
-        grTexSource( 0, fontAddress, 
+        grTexSource( 0, fontAddress,
                      GR_MIPMAPLEVELMASK_BOTH, &fontInfo );
         grClipWindow( (int)tlScaleX(0.0f),(int)tlScaleY(0.0f),
                       (int)tlScaleX(1.0f),(int)tlScaleY(1.0f) );
@@ -894,7 +893,7 @@ void tlConRender( void )
             for( x = 0; x < consoleColumns; x++ ) {
                 retDrawChar = drawChar( consoleGrid[(y*consoleColumns)+x],
                                         charX, charY, 1.0f, 0.0f,
-                                        consoleCharWidth, 
+                                        consoleCharWidth,
                                         consoleCharHeight );
                 if (retDrawChar == 1) {
                   charX += consoleCharWidth;
@@ -914,7 +913,7 @@ void tlConRender( void )
             for( x = 0; x < consoleColumns; x++ ) {
                 retDrawChar = drawChar( consoleGrid[(y*consoleColumns)+x],
                                         charX, charY, 0.0f, 0.0f,
-                                        consoleCharWidth, 
+                                        consoleCharWidth,
                                         consoleCharHeight );
                 if (retDrawChar == 1) {
                   charX += consoleCharWidth;
@@ -939,7 +938,7 @@ void tlConRender( void )
   Implementor(s): jdt
   Library: Test Library
   Description:
-  Block for a number of seconds 
+  Block for a number of seconds
   Arguments:
   seconds - number of seconds before function returns
   Return:
@@ -956,7 +955,7 @@ void tlSleep( int seconds )
   Date: 3/3
   Implementor(s): jdt
   Library: Test Library
-  Description: 
+  Description:
   Return an identity matrix
   Arguments:
   none
@@ -1115,7 +1114,7 @@ void tlMultMatrix( const float *m )
 
     for( j = 0; j < 4; j++ ) {
         for( i = 0; i < 4; i++ ) {
-            result[j][i] = 
+            result[j][i] =
                 currentMatrix[j][0] * mat[0][i] +
                 currentMatrix[j][1] * mat[1][i] +
                 currentMatrix[j][2] * mat[2][i] +
@@ -1123,7 +1122,7 @@ void tlMultMatrix( const float *m )
         }
     }
     memcpy( currentMatrix, result, sizeof( TlMatrix ) );
-    
+
 }
 
 /*-------------------------------------------------------------------
@@ -1246,20 +1245,20 @@ void tlCProjectVertices( TlVertex3D *dstVerts, const TlVertex3D *srcVerts, unsig
   Library: Test Libarary
   Description:
   Load Texture
-  
+
   This example loads textures from a .3df file.  3DF files
   containe pre-computed mipmaps data along with any
-  necessary supplementary information, for example 
+  necessary supplementary information, for example
   palettes, ncc-tables, level-of-detail description,
-  aspect ratio or format 
-  
+  aspect ratio or format
+
   The gu3dfGetInfo and gu3dfLoad APIs load A 3DF file
   into Gu3DfInfo structure from a file on disk.  Data
-  can then be extracted from the gu3DfInfo structure 
-  to initialize a GrTexInfo structure used in the 
+  can then be extracted from the gu3DfInfo structure
+  to initialize a GrTexInfo structure used in the
   glide texturing routines.  Also note that texture table
   ( either NCC or Palette ) management is left up to the
-  application programmer.  
+  application programmer.
   Arguments:
   filename - name of .3df file on disk
   info - Pointer to GrTexInfo
@@ -1271,8 +1270,8 @@ void tlCProjectVertices( TlVertex3D *dstVerts, const TlVertex3D *srcVerts, unsig
   -------------------------------------------------------------------*/
 static GrTexTable_t texTableType( GrTextureFormat_t format );
 
-int _tlLoad3df( const char *filename, 
-                GrTexInfo *info, 
+int _tlLoad3df( const char *filename,
+                GrTexInfo *info,
                 GrTexTable_t *tableType,
                 void *table )
 {
@@ -1333,8 +1332,8 @@ FxBool _Read32 (FILE *stream, FxU32* data)
   return FXTRUE;
 }
 
-int _tlLoadTXS( const char   *filename, 
-                GrTexInfo    *grinfo, 
+int _tlLoadTXS( const char   *filename,
+                GrTexInfo    *grinfo,
                 GrTexTable_t *tableType,
                 void         *table )
 {
@@ -1351,24 +1350,24 @@ int _tlLoadTXS( const char   *filename,
   if(stream==NULL) return FXFALSE;
 
   /* Read the full header */
-  if ( fscanf ( stream, "%4s %f %hu %hu %hu %hu %8x", 
-                cookie, 
+  if ( fscanf ( stream, "%4s %f %hu %hu %hu %hu %8x",
+                cookie,
                 &info.version,
-                &info.format, 
-                &info.width, 
-                &info.height, 
+                &info.format,
+                &info.width,
+                &info.height,
                 &info.mipmap_levels,
-                &data_offset ) 
+                &data_offset )
        != TXS_READ_NUM_FIELDS )
     return FXFALSE;
 
 #if DEBUG
   printf("TXSLOAD: cookie:%s version:%f format:%d\nw:%d h:%d m:%d o:%8x\n",
-         cookie, 
+         cookie,
          info.version,
-         info.format, 
-         info.width, 
-         info.height, 
+         info.format,
+         info.width,
+         info.height,
          info.mipmap_levels,
          data_offset);
 #endif
@@ -1376,7 +1375,7 @@ int _tlLoadTXS( const char   *filename,
   /* If the cookie doesn't match, then reject the file */
   if ( strcmp (cookie, TXS_COOKIE) ) return FXFALSE;
 
-  /* If the major version has increased, 
+  /* If the major version has increased,
    * then we can't be sure we can load this
    * file so reject it.
    */
@@ -1396,7 +1395,7 @@ int _tlLoadTXS( const char   *filename,
     switch ( info.format ) {
 #if NAPALM_TEXTURES
     case GR_TEXFMT_ARGB_CMP_FXT1:
-    case GR_TEXFMT_ARGB_CMP_DXT1:        
+    case GR_TEXFMT_ARGB_CMP_DXT1:
       bpp=4; break;
 #endif
 
@@ -1411,7 +1410,7 @@ int _tlLoadTXS( const char   *filename,
     case GR_TEXFMT_ARGB_CMP_DXT2:
     case GR_TEXFMT_ARGB_CMP_DXT3:
     case GR_TEXFMT_ARGB_CMP_DXT4:
-    case GR_TEXFMT_ARGB_CMP_DXT5:       
+    case GR_TEXFMT_ARGB_CMP_DXT5:
 #endif
       bpp=8; break;
 
@@ -1424,14 +1423,14 @@ int _tlLoadTXS( const char   *filename,
     case GR_TEXFMT_AP_88:
 #if RAMPAGE_TEXTURES
     case GR_TEXFMT_YUYV_422:
-    case GR_TEXFMT_UYVY_422:   
+    case GR_TEXFMT_UYVY_422:
 #endif
       bpp=16; break;
 
 #if NAPALM_TEXTURES
     case GR_TEXFMT_ARGB_8888:
 #if RAMPAGE_TEXTURES
-    case GR_TEXFMT_AYUV_444:   
+    case GR_TEXFMT_AYUV_444:
 #endif /* RAMPAGE */
       bpp=32; break;
 #endif /* NAPALM */
@@ -1469,9 +1468,9 @@ int _tlLoadTXS( const char   *filename,
       default:
         break;
       }
-      
+
       info.data_size+=(w*h*bpp)>>3;
-      
+
       if(w>1)w>>=1;
       if(h>1)h>>=1;
     }
@@ -1483,7 +1482,7 @@ int _tlLoadTXS( const char   *filename,
 
   /* read the data */
 
-  /* First read NCC/palette tables 
+  /* First read NCC/palette tables
    * straight into the user-provided table
    */
   if ((info.format == GR_TEXFMT_YIQ_422) ||
@@ -1495,7 +1494,7 @@ int _tlLoadTXS( const char   *filename,
           {
 #if DEBUG
             printf("Unable to read NCC Table\n");
-#endif      
+#endif
             return FXFALSE;
           }
       }
@@ -1503,9 +1502,9 @@ int _tlLoadTXS( const char   *filename,
   else if ((info.format == GR_TEXFMT_P_8)  ||
            (info.format == GR_TEXFMT_AP_88)||
            (info.format == GR_TEXFMT_P_8_6666))
-    {  
+    {
       FxU32 i;
-      for (i = 0; i < 256; i ++) 
+      for (i = 0; i < 256; i ++)
         {
           if (FXFALSE == _Read32 (stream, &((FxU32 *)table)[i]))
             {
@@ -1534,7 +1533,7 @@ int _tlLoadTXS( const char   *filename,
     case GR_TEXFMT_P_8:
     case GR_TEXFMT_P_8_6666:
       /* 8 bit */
-      if ((FxU32) info.data_size != 
+      if ((FxU32) info.data_size !=
           fread (info.data, 1, (FxU32) info.data_size, stream))
         {
 #if DEBUG
@@ -1555,7 +1554,7 @@ int _tlLoadTXS( const char   *filename,
       {
         FxU32 i;
         FxU16* data = (FxU16 *) info.data;
-        
+
         for (i = 0; i < (info.data_size >> 1); i++, data++)
           {
             if (FXFALSE == _Read16 (stream, data))
@@ -1575,7 +1574,7 @@ int _tlLoadTXS( const char   *filename,
       {
         FxU32 i;
         FxU32* data = (FxU32 *) info.data;
-        
+
         for (i = 0; i < (info.data_size >> 2); i++, data++)
           {
             if (FXFALSE == _Read32 (stream, data))
@@ -1597,7 +1596,7 @@ int _tlLoadTXS( const char   *filename,
       return FXFALSE;
     }
 
-  /* fill in the GrTexInfo structure 
+  /* fill in the GrTexInfo structure
      Note that this assumes that the texture is a power of two --
      fails for NPOT.
    */
@@ -1640,8 +1639,8 @@ int _tlLoadTXS( const char   *filename,
   return FXTRUE;
 }
 
-int tlLoadTexture( const char *filename, 
-                   GrTexInfo *info, 
+int tlLoadTexture( const char *filename,
+                   GrTexInfo *info,
                    GrTexTable_t *tableType,
                    void *table )
 {
@@ -1681,11 +1680,11 @@ int tlLoadTexture( const char *filename,
 
 static void consoleScroll( void )
 {
-    memmove( consoleGrid, 
+    memmove( consoleGrid,
              consoleGrid + consoleColumns,
              (consoleRows-1)*consoleColumns );
     memset( consoleGrid+(consoleRows-1)*consoleColumns,
-            32, 
+            32,
             consoleColumns );
 }
 
@@ -1696,7 +1695,7 @@ static int drawChar( char character,
 {
     GrVertex a, b, c, d;
     /* a---b
-       |\  |    
+       |\  |
        | \ |
        |  \|
        c---d */
@@ -1717,16 +1716,16 @@ static int drawChar( char character,
 
 #define TEXTURE_EPS 0.1f
 
-    a.tmuvtx[0].sow = c.tmuvtx[0].sow = 
+    a.tmuvtx[0].sow = c.tmuvtx[0].sow =
         (float)fontTable[(unsigned char)character][0] + TEXTURE_EPS;
-    a.tmuvtx[0].tow = b.tmuvtx[0].tow = 
+    a.tmuvtx[0].tow = b.tmuvtx[0].tow =
         (float)fontTable[(unsigned char)character][1] + TEXTURE_EPS;
 
     /* we need to multiply times 2 since Glide wants texture coords in
      * the range of 0..255 and our font texture is only 128 wide */
-    d.tmuvtx[0].sow = b.tmuvtx[0].sow = 
+    d.tmuvtx[0].sow = b.tmuvtx[0].sow =
         a.tmuvtx[0].sow + (float)(2*fontWidth) - 2.0f*TEXTURE_EPS;
-    d.tmuvtx[0].tow = c.tmuvtx[0].tow = 
+    d.tmuvtx[0].tow = c.tmuvtx[0].tow =
         a.tmuvtx[0].tow + (float)(2*fontHeight) - 2.0f*TEXTURE_EPS;
 
     if (character == '_') {
@@ -1747,10 +1746,10 @@ static int drawChar( char character,
 
 
 #if 0 /* not used */
-static void readRegion( void *data, 
+static void readRegion( void *data,
                         int x, int y,
                         int w, int h );
-static void writeRegion( void *data, 
+static void writeRegion( void *data,
                          int x, int y,
                          int w, int h );
 
@@ -1791,13 +1790,13 @@ static void grabTex( FxU32 addr, void *storage )
     texInfo.format      = GR_TEXFMT_RGB_565;
     texInfo.data        = 0;
     grTexMipMapMode( 0, GR_MIPMAP_DISABLE, FXFALSE );
-    grTexFilterMode( 0, 
-                     GR_TEXTUREFILTER_POINT_SAMPLED, 
+    grTexFilterMode( 0,
+                     GR_TEXTUREFILTER_POINT_SAMPLED,
                      GR_TEXTUREFILTER_POINT_SAMPLED );
-    grTexCombine( 0, 
-                  GR_COMBINE_FUNCTION_LOCAL, 
+    grTexCombine( 0,
+                  GR_COMBINE_FUNCTION_LOCAL,
                   GR_COMBINE_FACTOR_NONE,
-                  GR_COMBINE_FUNCTION_LOCAL, 
+                  GR_COMBINE_FUNCTION_LOCAL,
                   GR_COMBINE_FACTOR_NONE,
                   FXFALSE,
                   FXFALSE );
@@ -1810,7 +1809,7 @@ static void grabTex( FxU32 addr, void *storage )
     grAlphaBlendFunction( GR_BLEND_ONE, GR_BLEND_ZERO,
                           GR_BLEND_ONE, GR_BLEND_ZERO);
     grDepthBufferFunction( GR_DEPTHBUFFER_DISABLE );
-    grAlphaTestFunction( GR_CMP_ALWAYS );    
+    grAlphaTestFunction( GR_CMP_ALWAYS );
     grFogMode( GR_FOG_DISABLE );
     grCullMode( GR_CULL_DISABLE );
     grChromakeyMode( GR_CHROMAKEY_DISABLE );
@@ -1830,20 +1829,20 @@ static void grabTex( FxU32 addr, void *storage )
     grDrawTriangle( &a, &d, &c );
     grDrawTriangle( &a, &b, &d );
     readRegion( storage, 0, 0, 256, 256 );
-    
+
     /* Restore The Upper Left Hand of Frame Buffer */
     writeRegion( tmpSpace, 0, 0, 256, 256 );
     grGlideSetState( state );
     return;
 }
 
-static void readRegion( void *data, 
+static void readRegion( void *data,
                         int sx, int sy,
                         int w, int h )
 {
     int x; int y;
     GrLfbInfo_t info;
-    
+
     info.size = sizeof( info );
 
     assert( grLfbLock( GR_LFB_READ_ONLY,
@@ -1864,11 +1863,11 @@ static void readRegion( void *data,
         }
     }
 
-    
+
     assert( grLfbUnlock( GR_LFB_READ_ONLY, GR_BUFFER_BACKBUFFER ) );
     return;
 }
-static void writeRegion( void *data, 
+static void writeRegion( void *data,
                          int sx, int sy,
                          int w, int h )
 {
@@ -1950,7 +1949,7 @@ SimpleRleDecode
 {
   FxU32 count = width * height;
   FxU8 run, lit;
-  
+
   while (count) {
     if (*mem & 0x80) {
       run = *mem & 0x7f;
@@ -1996,7 +1995,7 @@ SimpleRleDecode
  * Return:
  *  none
  */
-static void 
+static void
 WritePixel
 (
  FxBool flag,
@@ -2036,7 +2035,7 @@ WritePixel
  * Return:
  *  none
  */
-static FxU32 
+static FxU32
 SimpleRleEncode
 (
  FxU32 pixelcount,   /* number of pixels */
@@ -2044,7 +2043,7 @@ SimpleRleEncode
  FxU8  *mem,         /* src image */
  FxU8  *buff         /* compressed data */
 )
-{  
+{
   FxU8    *src = buff;
   FxU8    run = 0, lit = 0;
   FxU32   tmp[130];
@@ -2113,7 +2112,7 @@ SimpleRleEncode
     buff += (1 + pixelsize);
     run = 0;
   }
-  
+
   return( (FxU32) (buff - src));
 }
 
@@ -2135,7 +2134,7 @@ FxBool
 tlScreenDump
 (
  const char *filename,
- FxU16 width, 
+ FxU16 width,
  FxU16 height
 )
 {
@@ -2265,7 +2264,7 @@ int  tlKbHit( void )
 char tlGetCH( void )
 {
 #if macintosh
-    char retVal = 0;        
+    char retVal = 0;
     EventRecord tempEvent;
 
     while(retVal==0)
@@ -2274,7 +2273,7 @@ char tlGetCH( void )
           case keyDown:
           case autoKey:
             retVal = (char)(tempEvent.message & 0xFF);
-            break;                                    
+            break;
           default:
             SIOUXHandleOneEvent(&tempEvent);
             break;
@@ -2337,7 +2336,7 @@ MainWndproc( HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam )
   PAINTSTRUCT ps;
   HDC         hdc;
   FxU32 i;
-  
+
   switch( message ) {
     case WM_SETCURSOR:
       if (Res != GR_RESOLUTION_NONE) {
@@ -2357,12 +2356,12 @@ MainWndproc( HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam )
           grSstSelect(i);
           fsContext->context = grSstWinOpen((FxU32)hWnd,
                                             fsContext->res, fsContext->refresh,
-                                            fsContext->colorFmt, 
+                                            fsContext->colorFmt,
                                             fsContext->origin,
                                             fsContext->nColBuf, fsContext->nAuxBuf);
         } else if (wParam == WA_INACTIVE) {
           if (grSelectContext(fsContext->context)) {
-            
+
           } else {
             fsContext->context = 0x00UL;
           }
@@ -2425,7 +2424,7 @@ MainWndproc( HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam )
       break;
     }
   return DefWindowProc(hWnd, message, wParam, lParam);
-  
+
 } /* MainWndproc */
 
 /*
@@ -2438,7 +2437,7 @@ initApplication( HANDLE hInstance )
 {
   WNDCLASS    wc;
   BOOL        rc;
-  
+
   wc.style = CS_DBLCLKS;
   wc.lpfnWndProc = MainWndproc;
   wc.cbClsExtra = 0;
@@ -2453,25 +2452,25 @@ initApplication( HANDLE hInstance )
   if( !rc ) {
     return FALSE;
   }
-  
+
   hWndMain =
     CreateWindowEx(
-#if 0                         
+#if 0
                    WS_EX_APPWINDOW  gives you regular borders?
                    WS_EX_TOPMOST    Works as advertised.
 #endif
                    WS_EX_APPWINDOW,
                    "WinGlideClass",
                    "Glide Test",
-                   WS_OVERLAPPED |     
-                   WS_CAPTION  |     
-                   WS_THICKFRAME | 
-                   WS_MAXIMIZEBOX | 
-                   WS_MINIMIZEBOX | 
+                   WS_OVERLAPPED |
+                   WS_CAPTION  |
+                   WS_THICKFRAME |
+                   WS_MAXIMIZEBOX |
+                   WS_MINIMIZEBOX |
                    WS_VISIBLE | /* so we don't have to call ShowWindow */
                    WS_POPUP | /* non-app window */
                    WS_SYSMENU, /* so we get an icon in the tray */
-                   CW_USEDEFAULT, 
+                   CW_USEDEFAULT,
                    CW_USEDEFAULT,
                    0x110, /* GetSystemMetrics(SM_CXSCREEN), */
                    0x120, /* GetSystemMetrics(SM_CYSCREEN), */
@@ -2480,18 +2479,18 @@ initApplication( HANDLE hInstance )
                    hInstance,
                    NULL
                    );
-  
+
   if( !hWndMain ) {
     return FALSE;
   }
-  
+
   SetCursor(NULL);
-  
+
   ShowWindow( hWndMain, SW_NORMAL);
   UpdateWindow( hWndMain );
-  
+
   return TRUE;
-  
+
 } /* initApplication */
 
 /*
@@ -2503,12 +2502,12 @@ int
 main( int argc, char **argv)
 {
   extern int mainT(int argc, char **argv);
-   
+
   if( !initApplication( GetModuleHandle(NULL)) )
     return FALSE;
-  
+
   {
-    /* 
+    /*
      * Since printfs go into the bit bucket on Win32,
      * put up a message in the window.
      */
@@ -2520,16 +2519,16 @@ main( int argc, char **argv)
     SetTextColor(hDC, RGB(0, 255, 255));
     SetBkColor(hDC, RGB(0, 0, 0));
     SetTextAlign(hDC, TA_CENTER);
-    ExtTextOut(hDC, rect.right/2, rect.bottom/2, ETO_OPAQUE, &rect, 
+    ExtTextOut(hDC, rect.right/2, rect.bottom/2, ETO_OPAQUE, &rect,
                message, strlen(message), NULL);
     ReleaseDC(hWndMain, hDC);
     GdiFlush();
   }
   /* call the renamed test main proc */
-  mainT(argc,argv);
+  run(argc,argv);
   printf("Exiting main()\n");
   fflush(stdout);
-  
+
   DestroyWindow(hWndMain);
   return 0;
 } /* WinMain */
@@ -2539,13 +2538,13 @@ tlErrorMessage(const char *err)
 {
   /* make the cursor visible */
   SetCursor(LoadCursor( NULL, IDC_ARROW ));
-  
+
   /*
-   ** warn user if there is one 
+   ** warn user if there is one
    */
   printf("Error %s..\n", err);
   fflush(stdout);
-  
+
   MessageBox( hWndMain, err, "ERROR", MB_OK );
   return FXFALSE;
 } /* tlErrorMessage */
@@ -2563,14 +2562,14 @@ tlErrorMessage(const char *err)
   nonzero if keys in queue
   -------------------------------------------------------------------*/
 int
-tlKbHit( void ) 
+tlKbHit( void )
 {
   MSG msg;
-  
+
   if (qhead != qtail) {
     return 1;
   }
-  
+
   while (PeekMessage(&msg, NULL, 0, 0, PM_REMOVE)) {
     TranslateMessage(&msg);
     DispatchMessage(&msg);      /* this might change qhead */
@@ -2594,17 +2593,17 @@ tlKbHit( void )
   character
   -------------------------------------------------------------------*/
 char
-tlGetCH( void ) 
+tlGetCH( void )
 {
   MSG     msg;
   char    rv;
-  
+
   if (qtail != qhead) {
     rv = queue[qtail++];
     qtail &= 255;
     return rv;
   }
-  
+
   while (GetMessage( &msg, NULL, 0, 0 )) {
     TranslateMessage(&msg);
     DispatchMessage(&msg);
@@ -2615,7 +2614,7 @@ tlGetCH( void )
       return rv;
     }
   }
-  
+
   /* Should never get here!! */
   /* printf("Bad exit..\n"); */
   /* fflush(stdout); */
@@ -2630,11 +2629,11 @@ tlExit()
 }
 
 
-void 
+void
 getWindowSize(float *width, float *height)
 {
   RECT    rect;
-  
+
   if (fullScreen) {
     GetWindowRect(hWndMain, &rect);
     *width = (float) (rect.right-rect.left);
@@ -2675,7 +2674,7 @@ void tlInitGlideExt ( tlGlideExtension *gExt)
       gExt->grTBufferWriteMask = grGetProcAddress("grTBufferWriteMaskExt");
       if ((gExt->grSstWinOpen) && (gExt->grColorMask) &&
           (gExt->grStencilFunc) && (gExt->grStencilMask) &&
-          (gExt->grStencilOp) && (gExt->grBufferClearExt) && 
+          (gExt->grStencilOp) && (gExt->grBufferClearExt) &&
           (gExt->grLfbConstantStencil) && (gExt->grTBufferWriteMask)) {
         gExt->pixext = FXTRUE;
       }
@@ -2692,7 +2691,7 @@ void tlInitGlideExt ( tlGlideExtension *gExt)
         gExt->combineext = FXTRUE;
       }
     }
-  }  
+  }
   if ((extstr = strstr(extension, "TEXFMT")) != NULL) {
     if (!strncmp(extstr, "TEXFMT", 6)) {
       gExt->canDo32BitTexture = FXTRUE;

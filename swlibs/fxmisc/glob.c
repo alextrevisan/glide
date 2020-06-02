@@ -214,7 +214,7 @@ glob(pattern, flags, errfunc, pglob)
 	compilepat = patnext;
 	if (!(flags & GLOB_NOESCAPE)) {
 		/* Protect the quoted characters. */
-		while (bufnext < bufend && (c = *patnext++) != EOS) 
+		while (bufnext < bufend && (c = *patnext++) != EOS)
 #if WIN_NT
 			if (c == PROT1 && (flags & GLOB_SHQUOTE))
 				prot1 ^= 1;
@@ -243,8 +243,8 @@ glob(pattern, flags, errfunc, pglob)
 			else
 				*bufnext++ = (Char) c;
 	}
-	else 
-	    while (bufnext < bufend && (c = *patnext++) != EOS) 
+	else
+	    while (bufnext < bufend && (c = *patnext++) != EOS)
 		    *bufnext++ = (Char) c;
 	*bufnext = EOS;
 
@@ -350,7 +350,7 @@ glob(pattern, flags, errfunc, pglob)
 			*compilebuf = EOS;
 		}
 		return(globextend(patbuf, pglob));
-	} else if (!(flags & GLOB_NOSORT)) 
+	} else if (!(flags & GLOB_NOSORT))
 		qsort(pglob->gl_pathv + pglob->gl_offs + oldpathc,
 		    pglob->gl_pathc - oldpathc, sizeof(char *), compare);
 	return(0);
@@ -411,7 +411,7 @@ glob2(pathbuf, pathend, pattern, pglob)
 			*pathend = EOS;
 			if (g_stat(pathbuf, &sb))
 				return(0);
-		
+
 			if (((pglob->gl_flags & GLOB_MARK) &&
 #if WIN_NT
 #define S_ISDIR(m) ( ((m) & _S_IFMT) == _S_IFDIR )
@@ -462,11 +462,11 @@ glob3(pathbuf, pathend, pattern, restpattern, pglob)
 	char *dp;
 	DIR *dirp;
 	int err;
-static int errno;	// GMT: this keeps the linker from going into LIBC and
+//static int errno;	// GMT: this keeps the linker from going into LIBC and
 			// generating multiply defined warnings for _exit
 	*pathend = EOS;
 	errno = 0;
-	    
+
 	if (!(dirp = g_opendir(pathbuf)))
 		/* TODO: don't call for ENOENT or ENOTDIR? */
 		if (pglob->gl_errfunc &&
@@ -486,7 +486,7 @@ static int errno;	// GMT: this keeps the linker from going into LIBC and
 		/* Initial DOT must be matched literally. */
 		if (dp[0] == DOT && *pattern != DOT)
 			continue;
-		for (sc = (u_char *) dp, dc = pathend; 
+		for (sc = (u_char *) dp, dc = pathend;
 		     (*dc++ = *sc++) != '\0';)
 			;
 		if (!match(pathend, pattern, restpattern)) {
@@ -720,7 +720,7 @@ g_Ctoc(str, buf)
 }
 
 #ifdef DEBUG
-static void 
+static void
 #if __STDC__
 qprintf (register Char *s)
 #else

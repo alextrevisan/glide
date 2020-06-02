@@ -2,25 +2,26 @@
 ** THIS SOFTWARE IS SUBJECT TO COPYRIGHT PROTECTION AND IS OFFERED ONLY
 ** PURSUANT TO THE 3DFX GLIDE GENERAL PUBLIC LICENSE. THERE IS NO RIGHT
 ** TO USE THE GLIDE TRADEMARK WITHOUT PRIOR WRITTEN PERMISSION OF 3DFX
-** INTERACTIVE, INC. A COPY OF THIS LICENSE MAY BE OBTAINED FROM THE 
-** DISTRIBUTOR OR BY CONTACTING 3DFX INTERACTIVE INC(info@3dfx.com). 
-** THIS PROGRAM IS PROVIDED "AS IS" WITHOUT WARRANTY OF ANY KIND, EITHER 
+** INTERACTIVE, INC. A COPY OF THIS LICENSE MAY BE OBTAINED FROM THE
+** DISTRIBUTOR OR BY CONTACTING 3DFX INTERACTIVE INC(info@3dfx.com).
+** THIS PROGRAM IS PROVIDED "AS IS" WITHOUT WARRANTY OF ANY KIND, EITHER
 ** EXPRESSED OR IMPLIED. SEE THE 3DFX GLIDE GENERAL PUBLIC LICENSE FOR A
-** FULL TEXT OF THE NON-WARRANTY PROVISIONS.  
-** 
+** FULL TEXT OF THE NON-WARRANTY PROVISIONS.
+**
 ** USE, DUPLICATION OR DISCLOSURE BY THE GOVERNMENT IS SUBJECT TO
 ** RESTRICTIONS AS SET FORTH IN SUBDIVISION (C)(1)(II) OF THE RIGHTS IN
 ** TECHNICAL DATA AND COMPUTER SOFTWARE CLAUSE AT DFARS 252.227-7013,
 ** AND/OR IN SIMILAR OR SUCCESSOR CLAUSES IN THE FAR, DOD OR NASA FAR
 ** SUPPLEMENT. UNPUBLISHED RIGHTS RESERVED UNDER THE COPYRIGHT LAWS OF
-** THE UNITED STATES.  
-** 
+** THE UNITED STATES.
+**
 ** COPYRIGHT 3DFX INTERACTIVE, INC. 1999, ALL RIGHTS RESERVED
 **
 */
 
 #ifndef _TLIB_H_
 #define _TLIB_H_
+#include <glide.h>
 #ifdef __cplusplus
 extern "C" {
 #endif
@@ -61,7 +62,7 @@ extern "C" {
 */
 typedef struct {
   float  sow;                   /* s texture ordinate (s over w) */
-  float  tow;                   /* t texture ordinate (t over w) */  
+  float  tow;                   /* t texture ordinate (t over w) */
   float  oow;                   /* 1/w (used mipmapping - really 0xfff/w) */
 }  GrTmuVertex;
 
@@ -99,7 +100,7 @@ typedef struct
 /*
 ** define voodoo types
 */
-#define TL_VOODOO_UNDEF         1
+#define TL_VOODOO_UNDEF   1
 #define TL_VOODOO         1
 #define TL_VOODOORUSH     2
 #define TL_VOODOO2        3
@@ -124,18 +125,39 @@ typedef struct
 
 typedef struct {
   FxBool    pixext;                       /* PIXEXT */
-  GrProc    grSstWinOpen;
-  GrProc    grColorMask;
-  GrProc    grStencilFunc;
-  GrProc    grStencilMask;
-  GrProc    grStencilOp;
-  GrProc    grBufferClearExt;
+  GrContext_t (FX_CALL* grSstWinOpen)(
+	FxU32                hWnd,
+	GrScreenResolution_t screen_resolution,
+	GrScreenRefresh_t    refresh_rate,
+	GrColorFormat_t      color_format,
+	GrOriginLocation_t   origin_location,
+	GrPixelFormat_t      pixelformat,
+	int                  nColBuffers,
+	int                  nAuxBuffers);
+  void (FX_CALL* grColorMask)( FxBool rgb, FxBool a );
+  void (FX_CALL* grStencilFunc)(GrCmpFnc_t func, GrStencil_t ref, GrStencil_t mask);
+  void (FX_CALL* grStencilMask)(GrStencil_t mask);
+  void (FX_CALL* grStencilOp)(GrStencilOp_t fail, GrStencilOp_t zfail, GrStencilOp_t zpass);
+  void (FX_CALL* grBufferClearExt)(GrColor_t color, GrAlpha_t alpha, FxU32 depth, GrStencil_t stencil);
   GrProc    grLfbConstantStencil;
-  GrProc    grTBufferWriteMask;
+  void (FX_CALL* grTBufferWriteMask)(GrStencil_t mask);
   FxBool    combineext;                   /* COMBINE */
-  GrProc    grColorCombineExt;
-  GrProc    grAlphaCombineExt;
-  GrProc    grTexColorCombineExt;
+  void (FX_CALL* grColorCombineExt)(GrCCUColor_t a, GrCombineMode_t a_mode,
+                              GrCCUColor_t b, GrCombineMode_t b_mode,
+                              GrCCUColor_t c, FxBool c_invert,
+                              GrCCUColor_t d, FxBool d_invert,
+                              FxU32 shift, FxBool invert);
+  void (FX_CALL* grAlphaCombineExt)(GrACUColor_t a, GrCombineMode_t a_mode,
+	GrACUColor_t b, GrCombineMode_t b_mode,
+	GrACUColor_t c, FxBool c_invert,
+	GrACUColor_t d, FxBool d_invert,
+	FxU32 shift, FxBool invert);
+  void (FX_CALL* grTexColorCombineExt)(FxU32 tmu,
+                                 GrTCCUColor_t a, GrCombineMode_t a_mode,
+                                 GrTCCUColor_t b, GrCombineMode_t b_mode,
+                                 GrTCCUColor_t c, FxBool c_invert,
+                                 GrTCCUColor_t d, FxBool d_invert,
+                                 FxU32 shift, FxBool invert);
   GrProc    grTexAlphaCombineExt;
   FxBool    canDo32BitTexture;            /* TEXFMT */
   FxBool    canDoFXT1Texture;             /* TEXFMT */
@@ -159,7 +181,7 @@ void  tlSetScreen( float width, float height );
 float tlScaleX( float coord );
 float tlScaleY( float coord );
 
-void tlConSet( float minX, float minY, 
+void tlConSet( float minX, float minY,
                float maxX, float maxY,
                int columns, int rows,
                int color );
@@ -168,7 +190,9 @@ void tlConClear();
 void tlConRender();
 
 int  tlKbHit( void );
+char tlKbHitSDL(void);
 char tlGetCH( void );
+char tlGetCHSDL( void );
 FxU32 tlGethWnd( void );
 
 void tlSleep( int seconds );
@@ -178,7 +202,7 @@ void tlSleep( int seconds );
 #define IMAGE_SRLE             (((FxU32)'S' << 24) | ((FxU32)'R' << 16) | ((FxU32)'L' << 8) | ((FxU32)'E'))
 
 FxBool SimpleRleDecode(FxU16 width,FxU16 height,FxU8 pixelsize, FxU8 *mem,FxU8 *buff);
-void tlGrabRect(void *memory, FxU32 minx, FxU32 miny, FxU32 maxx, FxU32 maxy); 
+void tlGrabRect(void *memory, FxU32 minx, FxU32 miny, FxU32 maxx, FxU32 maxy);
 FxBool tlScreenDump(const char *filename, FxU16 width,  FxU16 height);
 
 typedef struct {
@@ -203,14 +227,14 @@ const float *tlXRotation( float degrees );
 const float *tlTranslation( float x, float y, float z );
 void tlSetMatrix( const float *m );
 void tlMultMatrix( const float *m );
-void tlTransformVertices( TlVertex3D *dstList, 
-                          const TlVertex3D *srcList, 
+void tlTransformVertices( TlVertex3D *dstList,
+                          const TlVertex3D *srcList,
                           unsigned length );
 void tlProjectVertices( TlVertex3D *dstList,
-                        const TlVertex3D *srcList, 
+                        const TlVertex3D *srcList,
                         unsigned length );
 void tlCProjectVertices( TlVertex3D *dstList,
-                         const TlVertex3D *srcList, 
+                         const TlVertex3D *srcList,
                          unsigned length );
 
 
@@ -218,8 +242,8 @@ FxBool tlOkToRender(void);
 
 #define kMaxGlideContext 10
 GrContext_t* tlCheckRenderContext(FxU32 glideDeviceNum);
-GrContext_t* tlGetRenderContext(FxU32 glideDeviceNum, FxU32 hWnd, 
-                                GrScreenResolution_t res, 
+GrContext_t* tlGetRenderContext(FxU32 glideDeviceNum, FxU32 hWnd,
+                                GrScreenResolution_t res,
                                 GrScreenRefresh_t refresh,
                                 GrColorFormat_t colorFmt,
                                 GrOriginLocation_t origin,
@@ -249,8 +273,8 @@ typedef struct {
 
 #define NO_TABLE ((GrTexTable_t)(~0))
 
-int tlLoadTexture( const char *filename, 
-                   GrTexInfo *info, 
+int tlLoadTexture( const char *filename,
+                   GrTexInfo *info,
                    GrTexTable_t *tableType,
                    void *table );
 
@@ -259,13 +283,10 @@ int tlLoadTexture( const char *filename,
 #undef NDEBUG
 #endif
 
-/* Don't do this muckage if this is a DOS build since 
+/* Don't do this muckage if this is a DOS build since
  * it is already a 'console' app.
  */
-#if !__DOS32__ && !macintosh && !__unix__ && !defined(__linux__)
-/* redefine main proc to something else */
-#define main mainT
-#endif /* !__DOS32__ && !macintosh && !__unix__ && !defined(__linux__) */
+
 
 #if macintosh
 extern char *strdup(const char *src);

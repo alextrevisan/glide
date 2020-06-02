@@ -1,67 +1,70 @@
+#ifndef HEADER_F3247B2181C63BB3
+#define HEADER_F3247B2181C63BB3
+
 /*
 ** THIS SOFTWARE IS SUBJECT TO COPYRIGHT PROTECTION AND IS OFFERED ONLY
 ** PURSUANT TO THE 3DFX GLIDE GENERAL PUBLIC LICENSE. THERE IS NO RIGHT
 ** TO USE THE GLIDE TRADEMARK WITHOUT PRIOR WRITTEN PERMISSION OF 3DFX
-** INTERACTIVE, INC. A COPY OF THIS LICENSE MAY BE OBTAINED FROM THE 
-** DISTRIBUTOR OR BY CONTACTING 3DFX INTERACTIVE INC(info@3dfx.com). 
-** THIS PROGRAM IS PROVIDED "AS IS" WITHOUT WARRANTY OF ANY KIND, EITHER 
+** INTERACTIVE, INC. A COPY OF THIS LICENSE MAY BE OBTAINED FROM THE
+** DISTRIBUTOR OR BY CONTACTING 3DFX INTERACTIVE INC(info@3dfx.com).
+** THIS PROGRAM IS PROVIDED "AS IS" WITHOUT WARRANTY OF ANY KIND, EITHER
 ** EXPRESSED OR IMPLIED. SEE THE 3DFX GLIDE GENERAL PUBLIC LICENSE FOR A
-** FULL TEXT OF THE NON-WARRANTY PROVISIONS.  
-** 
+** FULL TEXT OF THE NON-WARRANTY PROVISIONS.
+**
 ** USE, DUPLICATION OR DISCLOSURE BY THE GOVERNMENT IS SUBJECT TO
 ** RESTRICTIONS AS SET FORTH IN SUBDIVISION (C)(1)(II) OF THE RIGHTS IN
 ** TECHNICAL DATA AND COMPUTER SOFTWARE CLAUSE AT DFARS 252.227-7013,
 ** AND/OR IN SIMILAR OR SUCCESSOR CLAUSES IN THE FAR, DOD OR NASA FAR
 ** SUPPLEMENT. UNPUBLISHED RIGHTS RESERVED UNDER THE COPYRIGHT LAWS OF
-** THE UNITED STATES.  
-** 
+** THE UNITED STATES.
+**
 ** COPYRIGHT 3DFX INTERACTIVE, INC. 1999, ALL RIGHTS RESERVED
 **
-** $Log: 
+** $Log:
 **  3    3dfx      1.0.1.0.1.0 10/11/00 Brent           Forced check in to enforce
 **       branching.
 **  2    3dfx      1.0.1.0     06/20/00 Joseph Kain     Changes to support the
 **       Napalm Glide open source release.  Changes include cleaned up offensive
 **       comments and new legal headers.
-**  1    3dfx      1.0         09/11/99 StarTeam VTS Administrator 
+**  1    3dfx      1.0         09/11/99 StarTeam VTS Administrator
 ** $
-** 
+**
 ** 4     7/24/98 1:41p Hohn
-** 
+**
 ** 3     1/30/98 4:27p Atai
 ** gufog* prototype
-** 
+**
 ** 1     1/29/98 4:00p Atai
- * 
+ *
  * 1     1/16/98 4:29p Atai
  * create glide 3 src
- * 
+ *
  * 11    1/07/98 11:18a Atai
  * remove GrMipMapInfo and GrGC.mm_table in glide3
- * 
+ *
  * 10    1/06/98 6:47p Atai
  * undo grSplash and remove gu routines
- * 
+ *
  * 9     1/05/98 6:04p Atai
  * move 3df gu related data structure from glide.h to glideutl.h
- * 
+ *
  * 8     12/18/97 2:13p Peter
  * fogTable cataclysm
- * 
+ *
  * 7     12/15/97 5:52p Atai
  * disable obsolete glide2 api for glide3
- * 
+ *
  * 6     8/14/97 5:32p Pgj
  * remove dead code per GMT
- * 
+ *
  * 5     6/12/97 5:19p Pgj
  * Fix bug 578
- * 
+ *
  * 4     3/05/97 9:36p Jdt
  * Removed guFbWriteRegion added guEncodeRLE16
- * 
+ *
  * 3     1/16/97 3:45p Dow
- * Embedded fn protos in ifndef FX_GLIDE_NO_FUNC_PROTO 
+ * Embedded fn protos in ifndef FX_GLIDE_NO_FUNC_PROTO
 */
 
 /* Glide Utility routines */
@@ -69,9 +72,6 @@
 #ifndef __GLIDEUTL_H__
 #define __GLIDEUTL_H__
 
-#ifdef __cplusplus
-extern "C" {
-#endif
 
 /*
 ** 3DF texture file structs
@@ -115,38 +115,37 @@ typedef struct
 ** Gamma functions
 */
 
-FX_ENTRY void FX_CALL 
-guGammaCorrectionRGB( FxFloat red, FxFloat green, FxFloat blue );
+[[maybe_unused]] FX_ENTRY void (FX_CALL *
+guGammaCorrectionRGB)( FxFloat red, FxFloat green, FxFloat blue ) = 0;
 
 /*
 ** fog stuff
 */
-FX_ENTRY float FX_CALL
-guFogTableIndexToW( int i );
+[[maybe_unused]] FX_ENTRY float (FX_CALL *
+guFogTableIndexToW)( int i ) = 0;
 
-FX_ENTRY void FX_CALL
-guFogGenerateExp( GrFog_t *fogtable, float density );
+[[maybe_unused]] FX_ENTRY void (FX_CALL *
+guFogGenerateExp)( GrFog_t *fogtable, float density ) = 0;
 
-FX_ENTRY void FX_CALL
-guFogGenerateExp2( GrFog_t *fogtable, float density );
+[[maybe_unused]] FX_ENTRY void (FX_CALL *
+guFogGenerateExp2)( GrFog_t *fogtable, float density ) = 0;
 
-FX_ENTRY void FX_CALL
-guFogGenerateLinear(GrFog_t *fogtable,
-                    float nearZ, float farZ );
+[[maybe_unused]] FX_ENTRY void (FX_CALL *
+guFogGenerateLinear)(GrFog_t *fogtable,
+                    float nearZ, float farZ ) = 0;
 
 /*
 ** hi-level texture manipulation tools.
 */
-FX_ENTRY FxBool FX_CALL
-gu3dfGetInfo( const char *filename, Gu3dfInfo *info );
+[[maybe_unused]] FX_ENTRY FxBool (FX_CALL *
+gu3dfGetInfo)( const char *filename, Gu3dfInfo *info ) = 0;
 
-FX_ENTRY FxBool FX_CALL
-gu3dfLoad( const char *filename, Gu3dfInfo *data );
+[[maybe_unused]] FX_ENTRY FxBool (FX_CALL *
+gu3dfLoad)( const char *filename, Gu3dfInfo *data ) = 0;
 
 #endif /* FX_GLIDE_NO_FUNC_PROTO */
 
-#ifdef __cplusplus
-}
-#endif
 
 #endif /* __GLIDEUTL_H__ */
+#endif // header guard
+

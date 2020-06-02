@@ -67,8 +67,9 @@ TEXUS_EXEDIR = $(FX_GLIDE_SW)/bin
 ###############################################################################
 
 # default cross-toolchain prefix
-DEF_CROSS=i686-pc-mingw32-
+#DEF_CROSS=i686-pc-mingw32-
 #DEF_CROSS=i686-w64-mingw32-
+DEF_CROSS=i686-w64-mingw32-
 
 # detect if running under unix by finding 'rm' in $PATH :
 ifeq ($(wildcard $(addsuffix /rm,$(subst :, ,$(PATH)))),)
@@ -136,7 +137,7 @@ endif
 ###############################################################################
 
 # linker
-LDFLAGS = -shared -m32 -Wl,--enable-auto-image-base -Wl,--no-undefined
+LDFLAGS = -shared -m32 -Wl,--enable-auto-image-base -Wl,--no-undefined -fleading-underscore
 #	 -Xlinker --output-def -Xlinker $(GLIDE_LIBDIR)/$(GLIDE_DEF)
 #	 -Xlinker --out-implib -Xlinker $(GLIDE_LIBDIR)/$(GLIDE_IMP)
 DLLTOOL_FLAGS = --as-flags=--32 -m i386 -U
@@ -150,7 +151,7 @@ ASFLAGS += $(CDEFS)
 RCFLAGS = --output-format=coff --target=pe-i386
 
 # compiler
-CFLAGS  = -m32 -Wall
+CFLAGS  = -m32 -Wall -fleading-underscore
 
 LDLIBS = -luser32 -lkernel32 -lddraw -lgdi32 -ldxguid -ladvapi32
 ifdef DEBUG
@@ -161,7 +162,7 @@ OPTFLAGS ?= -O2 -ffast-math -mtune=pentium
 endif
 
 
-CFLAGS += -I. -I../../incsrc -I../../minihwc
+CFLAGS += -I. -I../../incsrc -I../../minihwc -I../../../../swlibs/fxmisc -I../../../../swlibs/newpci/pcilib
 CFLAGS += -I$(FX_GLIDE_SW)/fxmisc -I$(FX_GLIDE_SW)/newpci/pcilib -I$(FX_GLIDE_SW)/fxmemmap
 CFLAGS += -I$(FX_GLIDE_SW)/texus2/lib
 CFLAGS += $(CDEFS) $(OPTFLAGS)
@@ -193,7 +194,7 @@ ifndef DEBUG
 ifeq ($(USE_X86),1)
 # the 'naked' grDrawTriangle() func is in xdrawtri.asm:
 # C_TRISETUP and GLIDE_DEBUG not defined (see gdraw.c)
-override USE_DRAWTRI_ASM = 1
+override USE_DRAWTRI_ASM = 0
 endif
 endif
 
@@ -311,12 +312,12 @@ endif
 .c.o:
 	$(CC) -o $@ $(CFLAGS) -c $<
 .rc.res:
-	$(RC) -o $@ $(RCFLAGS) $(CDEFS) -I$(FX_GLIDE_SW)/fxmisc $<
+	$(RC) -o $@ $(RCFLAGS) $(CDEFS) -I$(FX_GLIDE_SW)/fxmisc -I../../../../swlibs/fxmisc $< 
 
 ###############################################################################
 #	main
 ###############################################################################
-all: glide3x $(TEXUS_EXEDIR)/$(TEXUS_EXE)
+all: glide3x
 
 glide3x: $(GLIDE_LIBDIR)/$(GLIDE_DLL)
 
@@ -327,7 +328,7 @@ $(GLIDE_LIBDIR)/$(GLIDE_DLL): $(GLIDE_OBJECTS) $(GLIDE_RES)
 $(GLIDE_LIBDIR)/$(GLIDE_IMP): $(GLIDE_LIBDIR)/$(GLIDE_DLL)
 	$(DLLTOOL) $(DLLTOOL_FLAGS) --dllname $(GLIDE_DLL) --input-def $(GLIDE_LIBDIR)/$(GLIDE_DEF) --output-lib $@
 
-$(TEXUS_EXEDIR)/$(TEXUS_EXE): $(FX_GLIDE_SW)/texus2/cmd/cmd.c $(GLIDE_LIBDIR)/$(GLIDE_IMP)
+#$(TEXUS_EXEDIR)/$(TEXUS_EXE): $(FX_GLIDE_SW)/texus2/cmd/cmd.c $(GLIDE_LIBDIR)/$(GLIDE_IMP)
 #ifeq ($(TEXUS2),1)
 #	$(CC) -o $@ $(CFLAGS) $^
 #else

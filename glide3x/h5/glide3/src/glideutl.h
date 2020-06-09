@@ -116,32 +116,32 @@ typedef struct
 */
 
 [[maybe_unused]] FX_ENTRY void (FX_CALL *
-guGammaCorrectionRGB)( FxFloat red, FxFloat green, FxFloat blue ) = 0;
+guGammaCorrectionRGB)( FxFloat red, FxFloat green, FxFloat blue );
 
 /*
 ** fog stuff
 */
 [[maybe_unused]] FX_ENTRY float (FX_CALL *
-guFogTableIndexToW)( int i ) = 0;
+guFogTableIndexToW)( int i );
 
 [[maybe_unused]] FX_ENTRY void (FX_CALL *
-guFogGenerateExp)( GrFog_t *fogtable, float density ) = 0;
+guFogGenerateExp)( GrFog_t *fogtable, float density );
 
 [[maybe_unused]] FX_ENTRY void (FX_CALL *
-guFogGenerateExp2)( GrFog_t *fogtable, float density ) = 0;
+guFogGenerateExp2)( GrFog_t *fogtable, float density );
 
 [[maybe_unused]] FX_ENTRY void (FX_CALL *
 guFogGenerateLinear)(GrFog_t *fogtable,
-                    float nearZ, float farZ ) = 0;
+                    float nearZ, float farZ );
 
 /*
 ** hi-level texture manipulation tools.
 */
 [[maybe_unused]] FX_ENTRY FxBool (FX_CALL *
-gu3dfGetInfo)( const char *filename, Gu3dfInfo *info ) = 0;
+gu3dfGetInfo)( const char *filename, Gu3dfInfo *info );
 
 [[maybe_unused]] FX_ENTRY FxBool (FX_CALL *
-gu3dfLoad)( const char *filename, Gu3dfInfo *data ) = 0;
+gu3dfLoad)( const char *filename, Gu3dfInfo *data );
 
 #endif /* FX_GLIDE_NO_FUNC_PROTO */
 
